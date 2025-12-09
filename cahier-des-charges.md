@@ -31,6 +31,9 @@ L'objectif est de développer une application To-Do List (Gestionnaire de Tâche
 3. L'utilisateur doit pouvoir consulter la liste des tâches et les trier selon le degré d'importance ou la date de création (utiliser HTMX)
 4. L'utilisateur doit pouvoir supprimer une tâche depuis la liste (utiliser HTMX)
 5. L'utilisateur doit pouvoir changer le statut d'une tâche en attente -> en cours -> terminée (utiliser HTMX, réaliser des tests unitaires)
+6. Ajouter une représentation JSON de la liste de tâches lorsque l'URL se termine par ".json"
+7. Ajouter une représentation CSV de la liste de tâches lorsque l'URL se termine par "CSV"
+8. Ajouter une library CSS pour décorer l'application et la rendre plus conviviale
 
 #### Fonctionnalités bonus
 
