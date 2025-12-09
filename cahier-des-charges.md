@@ -34,12 +34,13 @@ L'objectif est de développer une application To-Do List (Gestionnaire de Tâche
 6. Ajouter une représentation JSON de la liste de tâches lorsque l'URL se termine par ".json"
 7. Ajouter une représentation CSV de la liste de tâches lorsque l'URL se termine par "CSV"
 8. Ajouter une library CSS pour décorer l'application et la rendre plus conviviale
+9. Édition de Tâche (HTMX & Alpine) : Passer du mode affichage au mode édition en cliquant sur le texte de la tâche (utiliser Alpine.js pour l'état d'édition si besoin, ou HTMX inline editing).
 
 #### Fonctionnalités bonus
 
-1. Édition de Tâche (HTMX & Alpine) : Passer du mode affichage au mode édition en cliquant sur le texte de la tâche (utiliser Alpine.js pour l'état d'édition si besoin, ou HTMX inline editing).
-2. Filtrage (HTMX / Backend) : Ajout de boutons/liens pour filtrer les tâches : Toutes, Actives, Terminées.
-3. Conteneurisation (Docker) : Créer un Dockerfile pour conteneuriser l'application Bun (y compris les dépendances et le build TypeScript) et l'exécuter dans un conteneur.
+1. Filtrage (HTMX / Backend) : Ajout de boutons/liens pour filtrer les tâches : Toutes, Actives, Terminées.
+2. Conteneurisation (Docker) : Créer un Dockerfile pour conteneuriser l'application Bun (y compris les dépendances et le build TypeScript) et l'exécuter dans un conteneur.
+3. Utiliser un LLM par API pour intégrer des plans de réalisation automatisés lors de la création des tâches
 
 ## Workflow et Exigences de Qualité
 
