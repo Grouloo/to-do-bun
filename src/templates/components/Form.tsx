@@ -78,9 +78,10 @@ export async function onSubmit<T extends object, O>(
         } else {
           return {
             [name]: match(field)
-              .returnType<string | number | boolean>()
+              .returnType<string | number | boolean | Date>()
               .case({
                 Number: () => parseFloat(value),
+                DateTime: () => new Date(value),
                 _otherwise: () => value,
               }),
           }
