@@ -12,7 +12,7 @@ import { AddTask } from "./templates/add-task"
 
 export const TaskAPI = API.new()
 
-TaskAPI.path("/persons", async (cxt) => {
+TaskAPI.path("/task", async (cxt) => {
   const fetchAllTaskResult = await TaskTable(cxt.db).select().run()
 
   return fetchAllTaskResult.map(ListTaskTemplate).mapErr(ErrorTemplate).val
@@ -25,7 +25,7 @@ type AddTaskForm = {
   status : Status
 }
 
-TaskAPI.path("/persons/actions/add", async (cxt) => {
+TaskAPI.path("/task/actions/add", async (cxt) => {
   const ADD_TASK_FORM: FormDefinition<AddTaskForm> = {
     title: Field.Text({ label: "Nom de tâche", required: true }),
     description: Field.Text({ label: "Description de la tâche", required: true }),
@@ -43,12 +43,12 @@ TaskAPI.path("/persons/actions/add", async (cxt) => {
 
   const formResult = await onSubmit(cxt, ADD_TASK_FORM, (input) => {
     const newTask: Task = {
-      id: createUUID(),
-      title : input.title,
-      description: input.description,
-      priority: input.priority,
-      createdAt: new Date(),
-      status: input.status,
+        id: createUUID(),
+        title: input.title,
+        description: input.description,
+        priority: input.priority,
+        status: input.status,
+        createdAt: ""
     }
 
     return TaskTable(cxt.db).insert(newTask)

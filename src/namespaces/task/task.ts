@@ -6,7 +6,7 @@ export type Task = {
   title : string
   description : string
   priority : Priority
-  createdAt : Date
+  createdAt : string
   status : Status
 }
 
@@ -40,7 +40,7 @@ export const TaskTable = Table<Task>({
       type: "text",
     },
     createdAt: {
-      type: "unknown",
+      type: "text",
     },
     status: {
       type: "text",
