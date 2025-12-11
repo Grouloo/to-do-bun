@@ -4,5 +4,4 @@ import { TaskAPI } from "./namespaces/task/tasks-api";
 
 const PORT = Bun.env.PORT || "3000";
 
-API.new().use(PersonsAPI).listen(PORT)
-API.new().use(TaskAPI).listen(PORT)
+API.new().use(PersonsAPI).use(TaskAPI).listen(PORT)
