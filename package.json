@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "@elysiajs/html": "^1.4.0",
-    "better-sqlite3": "^12.5.0",
     "shulk": "^0.15.0"
   }
 }
