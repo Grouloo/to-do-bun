@@ -12,6 +12,7 @@ export function ListTaskTemplate(tasks: Task[]) {
           <li>Créée le : {new Date(task.createdAt).getDate()}/{new Date(task.createdAt).getMonth() + 1}/{new Date(task.createdAt).getFullYear()}</li>
           <li>Importance : {task.priority}</li>
           <li>Statut : {task.status}</li>
+          <li> <button hx-delete={`/task/${task.id}`} hx-target="#task_list">Supprimer</button></li>
         </ul>
       ))}
     </Layout>
