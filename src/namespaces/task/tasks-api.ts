@@ -65,7 +65,6 @@ TaskAPI.path("/task/sort/priority", async (cxt) => {
   return taskPrio.map(ListTaskTemplate).mapErr(ErrorTemplate).val  
 })
 
-
 // Tri Liste par Date
 TaskAPI.path("/task/sort/date", async (cxt) => {
   const taskDate = await TaskTable(cxt.db).select().orderBy("createdAt", "ASC").run()
