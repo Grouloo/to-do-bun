@@ -65,7 +65,6 @@ TaskAPI.path("/task/sort/priority", async (cxt) => {
   return taskPrio.map(ListTaskTemplate).mapErr(ErrorTemplate).val  
 })
 
-
 // Tri Liste par Date
 TaskAPI.path("/task/sort/date", async (cxt) => {
   const taskDate = await TaskTable(cxt.db).select().orderBy("createdAt", "ASC").run()
@@ -73,6 +72,14 @@ TaskAPI.path("/task/sort/date", async (cxt) => {
 })
 
 // Suppresion tâche
+TaskAPI.path("/task/:id/delete", async (cxt) => {
 
+  const id = cxt.params.id as string
+
+  const taskDelete = await TaskTable(cxt.db).delete(id)
+
+  const tasks = await TaskTable(cxt.db).select().run()
+  return tasks.map(ListTaskTemplate).mapErr(ErrorTemplate).val   
+})
 
 // Changement statut

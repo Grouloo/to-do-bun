@@ -5,7 +5,6 @@ import { Layout } from "../../../templates/Layout"
 export function ListTaskTemplate(tasks: Task[]) {
   return (
     <Layout title={"Liste des tâches"}>
-      
       <div>
         <button hx-get="/task/sort/priority" hx-target="#task_list">Trier par Priorite</button>
         <button hx-get="/task/sort/date" hx-target="#task_list">Trier par Date</button>
@@ -18,6 +17,7 @@ export function ListTaskTemplate(tasks: Task[]) {
             <li>Créée le : {new Date(task.createdAt).getDate()}/{new Date(task.createdAt).getMonth() + 1}/{new Date(task.createdAt).getFullYear()}</li>
             <li>Importance : {task.priority}</li>
             <li>Statut : {task.status}</li>
+            <li> <button hx-delete={`/task/${task.id}`} hx-target="#task_list">Supprimer</button></li>
           </ul>
         ))}
       </div>
