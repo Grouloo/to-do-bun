@@ -102,7 +102,7 @@ TaskAPI.path("/task/:id/delete", async (cxt) => {
 
 // CSV function
 function taskCSV(tasks: Task[]): string {
-  const header = ["id", "title", "description", "priority", "status", "createdAt"]
+  const header = ["ID", "Title", "Description", "Priority", "Status", "CreatedAt"]
 
   const rows = tasks.map(task => `${task.id},"${task.title}","${task.description}",${task.priority},${task.status},${task.createdAt}`)
 
