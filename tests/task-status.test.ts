@@ -18,71 +18,69 @@ beforeEach(() => {
         createdAt TEXT NOT NULL
         );
     `);
-    console.log("Database creee"); // pass
 })  
+describe("Lors d'un changement de statut, ", () => {
+    it("une tâche passe de 'à faire' à 'en cours'", async () => {
+        const id = "task-1" as any
 
-it("de TO_DO à IN_PROGRESS", async () => {
-    const id = "task-1" as any
+        await TaskTable(db).insert({
+            id,
+            title: "Test",
+            description: "bla bla bla",
+            priority: Priority.HIGH,
+            status: Status.TO_DO,
+            createdAt: new Date().toISOString(),
+        })
 
-    await TaskTable(db).insert({
-        id,
-        title: "Test",
-        description: "bla bla bla",
-        priority: Priority.HIGH,
-        status: Status.TO_DO,
-        createdAt: new Date().toISOString(),
+        const result = await TaskTable(db).select().where("id", "=", id).run()
+
+        const tasks = result.unwrap()[0]
+        if (!tasks) {
+        throw new Error("Task not found") 
+        } 
+
+        const updateStatus = {...tasks, status: Status.IN_PROGRESS}
+        await TaskTable(db).update(updateStatus)
+
+        const checkResult = await TaskTable(db).select().where("id", "=", id).run() 
+
+        const updatedTask = checkResult.unwrap()[0]
+        if (!updatedTask) {
+            throw new Error("Task not found after status update")
+        }
+
+        expect(updatedTask.status).toBe(Status.IN_PROGRESS)
     })
 
-    const result = await TaskTable(db).select().where("id", "=", id).run()
+    it("une tâche passe de 'en cours' à 'terminée'", async () => {
+        const id = "task-2" as any
 
-    const tasks = result.unwrap()[0]
-    if (!tasks) {
-    throw new Error("Task not found") 
-    } 
+        await TaskTable(db).insert({
+            id,
+            title: "Test 2",
+            description: "bli bli bli",
+            priority: Priority.MEDIUM,
+            status: Status.IN_PROGRESS,
+            createdAt: new Date().toISOString(),
+        })
 
-    const updateStatus = {...tasks, status: Status.IN_PROGRESS}
-    await TaskTable(db).update(updateStatus)
+        const result = await TaskTable(db).select().where("id", "=", id).run()
 
-    const checkResult = await TaskTable(db).select().where("id", "=", id).run() 
+        const tasks = result.unwrap()[0]
+        if (!tasks) {
+        throw new Error("Task not found") 
+        } 
 
-    const updatedTask = checkResult.unwrap()[0]
-    if (!updatedTask) {
-        throw new Error("Task not found after status update")
-    }
+        const updateStatus = {...tasks, status: Status.DONE}
+        await TaskTable(db).update(updateStatus)
 
-    expect(updatedTask.status).toBe(Status.IN_PROGRESS)
-})
+        const checkResult = await TaskTable(db).select().where("id", "=", id).run() 
 
-it("de IN_PROGRESS à DONE", async () => {
-    const id = "task-2" as any
+        const updatedTask = checkResult.unwrap()[0]
+        if (!updatedTask) {
+            throw new Error("Task not found after status update")
+        }
 
-    await TaskTable(db).insert({
-        id,
-        title: "Test 2",
-        description: "bli bli bli",
-        priority: Priority.MEDIUM,
-        status: Status.IN_PROGRESS,
-        createdAt: new Date().toISOString(),
+        expect(updatedTask.status).toBe(Status.DONE)
     })
-
-    const result = await TaskTable(db).select().where("id", "=", id).run()
-
-    const tasks = result.unwrap()[0]
-    if (!tasks) {
-    throw new Error("Task not found") 
-    } 
-
-    const updateStatus = {...tasks, status: Status.DONE}
-    await TaskTable(db).update(updateStatus)
-
-    const checkResult = await TaskTable(db).select().where("id", "=", id).run() 
-
-    const updatedTask = checkResult.unwrap()[0]
-    if (!updatedTask) {
-        throw new Error("Task not found after status update")
-    }
-
-    await TaskTable(db).update({id, status: Status.DONE } as any)
-    expect(updatedTask.status).toBe(Status.DONE)
 })
-                  

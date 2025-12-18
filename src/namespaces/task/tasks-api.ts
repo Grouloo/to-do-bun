@@ -101,7 +101,7 @@ TaskAPI.path("/task/:id/status-update", async (cxt) => {
   if (taskUpdate.status === Status.TO_DO) newStatus = Status.IN_PROGRESS
   else if (taskUpdate.status === Status.IN_PROGRESS) newStatus = Status.DONE
 
-  await TaskTable(cxt.db).update({id, status: newStatus } as Task)
+  await TaskTable(cxt.db).update({...taskUpdate, status: newStatus } as Task)
 
   const tasks = await TaskTable(cxt.db).select().run()
 
