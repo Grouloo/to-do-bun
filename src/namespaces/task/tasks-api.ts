@@ -17,6 +17,19 @@ export const TaskAPI = API.new()
 TaskAPI.path("/task", async (cxt) => {
   const fetchAllTaskResult = await TaskTable(cxt.db).select().run()
 
+  const tasks = fetchAllTaskResult.val as Task[]
+
+  // JSON
+  if (cxt.output === "json") {
+    return new Response(JSON.stringify(tasks), {
+      headers: { "Content-Type": "application/json" },
+    })
+  }
+
+  //CSV
+
+
+  //HTML
   return fetchAllTaskResult.map(ListTaskTemplate).mapErr(ErrorTemplate).val
 })
 
