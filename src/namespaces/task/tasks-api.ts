@@ -16,6 +16,23 @@ export const TaskAPI = API.new()
 TaskAPI.path("/task", async (cxt) => {
   const fetchAllTaskResult = await TaskTable(cxt.db).select().run()
 
+  const tasks = fetchAllTaskResult.val as Task[]
+
+  // JSON
+  if (cxt.output === "json") {
+    return new Response(JSON.stringify(tasks), {
+      headers: { "Content-Type": "application/json" },
+    })
+  }
+
+  // CSV
+  if (cxt.output === "csv") {
+    return new Response(taskCSV(tasks), {
+      headers: { "Content-Type": "text/csv" ,"Content-Disposition": 'attachment; filename="tasks.csv"',},
+    })
+  }
+
+  // HTML
   return fetchAllTaskResult.map(ListTaskTemplate).mapErr(ErrorTemplate).val
 })
 
@@ -107,3 +124,12 @@ TaskAPI.path("/task/:id/status-update", async (cxt) => {
 
   return tasks.map(ListTaskTemplate).mapErr(ErrorTemplate).val
 })
+
+// CSV function
+function taskCSV(tasks: Task[]): string {
+  const header = ["ID", "Title", "Description", "Priority", "Status", "CreatedAt"]
+
+  const rows = tasks.map(task => `${task.id},"${task.title}","${task.description}",${task.priority},${task.status},${task.createdAt}`)
+
+  return [header, ...rows].join("\n")
+}
