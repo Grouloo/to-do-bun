@@ -1,3 +1,4 @@
+JSON
 
 import type { Context } from "react"
 import { API } from "../../API"
@@ -26,10 +27,14 @@ TaskAPI.path("/task", async (cxt) => {
     })
   }
 
-  //CSV
+  // CSV
+  if (cxt.output === "csv") {
+    return new Response(taskCSV(tasks), {
+      headers: { "Content-Type": "text/csv" ,"Content-Disposition": 'attachment; filename="tasks.csv"',},
+    })
+  }
 
-
-  //HTML
+  // HTML
   return fetchAllTaskResult.map(ListTaskTemplate).mapErr(ErrorTemplate).val
 })
 
@@ -95,4 +100,11 @@ TaskAPI.path("/task/:id/delete", async (cxt) => {
   return tasks.map(ListTaskTemplate).mapErr(ErrorTemplate).val   
 })
 
-// Changement statut
+// CSV function
+function taskCSV(tasks: Task[]): string {
+  const header = ["ID", "Title", "Description", "Priority", "Status", "CreatedAt"]
+
+  const rows = tasks.map(task => `${task.id},"${task.title}","${task.description}",${task.priority},${task.status},${task.createdAt}`)
+
+  return [header, ...rows].join("\n")
+}
