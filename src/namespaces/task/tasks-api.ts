@@ -1,5 +1,3 @@
-JSON
-
 import type { Context } from "react"
 import { API } from "../../API"
 import { Field, onSubmit, type FormDefinition } from "../../templates/components/Form"
@@ -98,6 +96,33 @@ TaskAPI.path("/task/:id/delete", async (cxt) => {
 
   const tasks = await TaskTable(cxt.db).select().run()
   return tasks.map(ListTaskTemplate).mapErr(ErrorTemplate).val   
+})
+
+// Changement statut
+TaskAPI.path("/task/:id/status-update", async (cxt) => {
+  const id = cxt.params.id as string
+  const taskResult = await TaskTable(cxt.db).select().where("id", "=", id).run()
+  
+  if (taskResult.isErr()) {
+    return ErrorTemplate(taskResult.val)
+  }
+
+  const task = taskResult.val as Task[]
+  const taskUpdate = task[0]
+    if (!taskUpdate) {
+    return ErrorTemplate(new Error("Task not found"))
+  }
+
+  let newStatus = cxt.query.status as Status  
+
+  if (taskUpdate.status === Status.TO_DO) newStatus = Status.IN_PROGRESS
+  else if (taskUpdate.status === Status.IN_PROGRESS) newStatus = Status.DONE
+
+  await TaskTable(cxt.db).update({...taskUpdate, status: newStatus } as Task)
+
+  const tasks = await TaskTable(cxt.db).select().run()
+
+  return tasks.map(ListTaskTemplate).mapErr(ErrorTemplate).val
 })
 
 // CSV function
